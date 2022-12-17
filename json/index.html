@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script src=https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.3.0/math.min.js></script>
+
+    <title>sheppard world</title>
+
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div>Click on</div><div id="countryToGuess"></div>
+    <div id="map-canvas" style= "width: 100%; height: 100%;"></div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBjAI0IDm0XHal4-H7qXCy6E89s1ToiJE"></script>
+    <script type="module">
+
+        $( document ).ready(function() {
+
+            init();
+
+            function init() {
+                $.ajax({
+                    url : 'data.json',
+                    cache : true,
+                    dataType : 'json',
+                    async : true,
+
+                    success : function(data) {
+
+                        if (data) {
+
+                            $.each(data, function(id, country) {
+
+                                var countryCoords;
+                                var ca;
+                                var co;
+
+                                if ('multi' in country) {
+
+                                    var ccArray = [];
+
+                                    for (var t in country['xml']['Polygon']) {
+
+                                        countryCoords = [];
+
+                                        co = country['xml']['Polygon'][t]['outerBoundaryIs']['LinearRing']['coordinates'].split(' ');
+
+                                        for (var i in co) {
+
+                                            ca = co[i].split(',');
+
+                                            countryCoords.push(new google.maps.LatLng(ca[1], ca[0]));
+                                        }
+
+                                        ccArray.push(countryCoords);
+                                    }
+
+                                    createCountry(ccArray,country);
+
+                                } else {
+
+                                    countryCoords = [];
+
+                                    co = country['xml']['outerBoundaryIs']['LinearRing']['coordinates'].split(' ');
+
+                                    for (var j in co) {
+
+                                        ca = co[j].split(',');
+
+                                        countryCoords.push(new google.maps.LatLng(ca[1], ca[0]));
+                                    }
+
+                                    createCountry(countryCoords,country);
+                                }
+                            }.bind(this));
+
+                            showCountries();
+                        }
+                    }.bind(this)
+                });
+            }
+        });
+
+
+    </script>
+    <script type="text/javascript" src="/constants.js"></script>
+    <script type="text/javascript" src="/index.js"></script>
+</body>
+</html>
