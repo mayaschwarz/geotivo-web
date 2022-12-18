@@ -16,7 +16,16 @@
 </head>
 
 <body>
-    <div>Click on</div><div id="countryToGuess"></div>
+    <div>
+        <div style="display: flex; justify-content: center; padding-top: 5px; padding-bottom: 5px;">
+            <div style="color: rgb(59, 59, 59); font-size: 20px;">Click on</div>
+            <div id="countryToGuess" style="font-weight: bold; margin-left: 5px; font-size: 20px;"></div>
+        </div>
+        <div style="display: flex; justify-content: center; padding-top: 5px; padding-bottom: 5px;">
+            <div id="attempts" style = "font-weight: bold;"></div>
+            <div style="color: red; margin-left: 5px; flex-wrap: wrap;">attempts left</div>
+        </div>
+    </div>
     <div id="map-canvas" style= "width: 100%; height: 100%;"></div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

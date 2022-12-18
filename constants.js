@@ -8,3 +8,5 @@ const BOUNDS = {
     west: 180,
     east: -180,
 };
+
+const ALLOWED_ATTEMPTS = 5;

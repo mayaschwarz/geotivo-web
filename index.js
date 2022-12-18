@@ -2,6 +2,8 @@ let countries = [];
 let countriesGuessedCorrectly = [];
 let currCountryToGuess;
 let excludedCountries = [];
+let attempts = 0;
+let countriesYouNeedToWorkOn = [];
 
 let mapOptions = {
     zoom: 3,
@@ -23,18 +25,28 @@ let map = new google.maps.Map(
     document.getElementById('map-canvas'), mapOptions
 );
 map.fitBounds(BOUNDS);
+resetAllowedAttempts();
 
 function countryClick(country, i) {
-    console.log('currCountryToGuess is', currCountryToGuess.name);
     // guessed correctly
     if (country.name === currCountryToGuess.name) {
-        console.log("RIGHT!!!!");
         countriesGuessedCorrectly.push(i);
-        country.setOptions({'fillColor': COLORS[generateRandomNumber(0, COLORS.length, [])], 'fillOpacity': 0.5})
+        country.setOptions({'fillColor': "#00FF00", 'fillOpacity': 0.8});
+        attempts = 0;
+        resetAllowedAttempts();
         randomizeNextCountry();
     } else {
-        console.log("WRONG!!!!");
+        attempts += 1;
+        document.getElementById("attempts").innerHTML = ALLOWED_ATTEMPTS - attempts;
+        if (ALLOWED_ATTEMPTS - attempts === 0){
+            outOfAttempts(country);
+            countriesYouNeedToWorkOn.push(i);
+        }
     }
+}
+
+function resetAllowedAttempts(){
+    document.getElementById("attempts").innerHTML = ALLOWED_ATTEMPTS;
 }
 
 function generateRandomNumber(min, max, excludedCountries) {
@@ -42,6 +54,12 @@ function generateRandomNumber(min, max, excludedCountries) {
     return (excludedCountries.includes(num)) ? generateRandom(min, max) : num;
 }
 
+function outOfAttempts() {
+    console.log('out of attempts');
+    attempts = 0;
+    document.getElementById("attempts").innerHTML = ALLOWED_ATTEMPTS;
+    randomizeNextCountry();
+}
 
 function randomizeNextCountry() {
     currCountryToGuess = countries[generateRandomNumber(0, TOTAL_COUNTRIES, excludedCountries)];
@@ -54,11 +72,15 @@ function showCountries() {
         countries[i].setMap(map);
 
         google.maps.event.addListener(countries[i],"mouseover",function(){
-            this.setOptions({fillColor: "#EBEDEF", 'fillOpacity': 0.75});
+            if (!countriesGuessedCorrectly.includes(i) && !countriesYouNeedToWorkOn.includes(i)){
+                this.setOptions({fillColor: "#EBEDEF", 'fillOpacity': 0.75});
+            }
         });
-
+        
         google.maps.event.addListener(countries[i],"mouseout",function(){
-            this.setOptions({fillColor: "#EBEDEF", 'fillOpacity': 0});
+            if (!countriesGuessedCorrectly.includes(i) && !countriesYouNeedToWorkOn.includes(i)){
+                this.setOptions({fillColor: "#EBEDEF", 'fillOpacity': 0});
+            }
         });
 
         google.maps.event.addListener(countries[i], 'click', function(event) {
