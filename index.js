@@ -1,9 +1,9 @@
+let currCountryToGuess;
 let countries = [];
 let countriesGuessedCorrectly = [];
-let currCountryToGuess;
 let excludedCountries = [];
 let attempts = 0;
-let countriesYouNeedToWorkOn = [];
+let missedCountries = [];
 
 let mapOptions = {
     zoom: 3,
@@ -40,7 +40,7 @@ function countryClick(country, i) {
         document.getElementById("attempts").innerHTML = ALLOWED_ATTEMPTS - attempts;
         if (ALLOWED_ATTEMPTS - attempts === 0){
             outOfAttempts(country);
-            countriesYouNeedToWorkOn.push(i);
+            missedCountries.push(i);
         }
     }
 }
@@ -72,13 +72,13 @@ function showCountries() {
         countries[i].setMap(map);
 
         google.maps.event.addListener(countries[i],"mouseover",function(){
-            if (!countriesGuessedCorrectly.includes(i) && !countriesYouNeedToWorkOn.includes(i)){
+            if (!countriesGuessedCorrectly.includes(i) && !missedCountries.includes(i)){
                 this.setOptions({fillColor: "#EBEDEF", 'fillOpacity': 0.75});
             }
         });
         
         google.maps.event.addListener(countries[i],"mouseout",function(){
-            if (!countriesGuessedCorrectly.includes(i) && !countriesYouNeedToWorkOn.includes(i)){
+            if (!countriesGuessedCorrectly.includes(i) && !missedCountries.includes(i)){
                 this.setOptions({fillColor: "#EBEDEF", 'fillOpacity': 0});
             }
         });

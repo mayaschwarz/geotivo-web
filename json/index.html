@@ -33,7 +33,6 @@
     <script type="module">
 
         $( document ).ready(function() {
-
             init();
 
             function init() {
@@ -54,26 +53,21 @@
                                 var co;
 
                                 if ('multi' in country) {
-
-                                    var ccArray = [];
+                                    var countryCoordsArray = [];
 
                                     for (var t in country['xml']['Polygon']) {
-
                                         countryCoords = [];
-
                                         co = country['xml']['Polygon'][t]['outerBoundaryIs']['LinearRing']['coordinates'].split(' ');
 
                                         for (var i in co) {
-
                                             ca = co[i].split(',');
-
                                             countryCoords.push(new google.maps.LatLng(ca[1], ca[0]));
                                         }
 
-                                        ccArray.push(countryCoords);
+                                        countryCoordsArray.push(countryCoords);
                                     }
 
-                                    createCountry(ccArray,country);
+                                    createCountry(countryCoordsArray,country);
 
                                 } else {
 
