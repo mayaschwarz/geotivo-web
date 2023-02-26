@@ -9,4 +9,6 @@ const BOUNDS = {
     east: -180,
 };
 
-const ALLOWED_ATTEMPTS = 5;
+const ALLOWED_ATTEMPTS = 3;
+
+const ALLOWED_LIVES = 5;
