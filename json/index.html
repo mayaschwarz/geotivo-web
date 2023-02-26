@@ -3,9 +3,7 @@
 <head>
     <meta charset="utf-8">
     <script src=https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.3.0/math.min.js></script>
-
     <title>sheppard world</title>
-
     <style>
         html, body {
             width: 100%;
@@ -16,22 +14,46 @@
 </head>
 
 <body>
-    <div>
-        <div style="display: flex; justify-content: center; padding-top: 5px; padding-bottom: 5px;">
-            <div style="color: rgb(59, 59, 59); font-size: 20px;">Click on</div>
-            <div id="countryToGuess" style="font-weight: bold; margin-left: 5px; font-size: 20px;"></div>
-        </div>
-        <div style="display: flex; justify-content: center; padding-top: 5px; padding-bottom: 5px;">
-            <div id="attempts" style = "font-weight: bold;"></div>
-            <div style="color: red; margin-left: 5px; flex-wrap: wrap;">attempts left</div>
+    <div class="start-modal" style="position: fixed; z-index: 1; width: 100%;">
+        <div class="start-modal-content" style="display: flex; justify-content: center; align-items: center; background-color: #fefefe; margin: 15% auto; width: 30px; height: 100px; padding: 20px; border: 1px solid #888; width: 50%;">
+            <button class="start-button" style="height: 50%; width: 60%;">Start!</button>
         </div>
     </div>
-    <div id="map-canvas" style= "width: 100%; height: 100%;"></div>
-
+    <div class="game-over-modal" style="display: none; position: fixed; z-index: 1; width: 100%;">
+        <div class="game-over-modal-content" style="display: flex; justify-content: center; align-items: center; background-color: #fefefe; margin: 15% auto; width: 30px; height: 100px; padding: 20px; border: 1px solid #888; width: 50%;">
+            <div>GAME OVER</div>
+            <button class="restart-button" style="height: 50%; width: 40%;">
+                <img src="../imgs/restart.png" alt="restart" width="50" height="50"/>
+            </button>
+            <div>You've gotta work on these:</div>
+            <div id="game-stats"></div>
+        </div>
+    </div>
+    <span class="game-screen" style="filter: blur(2px)">
+        <div id="header" style = "display:flex; justify-content: space-around;">
+            <div id="countryAndAttempts">
+                <div style="display: flex; justify-content: center; padding-top: 5px; padding-bottom: 5px;">
+                    <div style="color: rgb(59, 59, 59); font-size: 20px;">Click on</div>
+                    <div id="countryToGuess" style="font-weight: bold; margin-left: 5px; font-size: 20px;"></div>
+                </div>
+                <div style="display: flex; justify-content: center; padding-top: 5px; padding-bottom: 5px;">
+                    <div id="attempts" style = "font-weight: bold;"></div>
+                    <div style="color: red; margin-left: 5px; flex-wrap: wrap;">attempts left</div>
+                </div>
+            </div>
+            <div id="livesbox" style = "display: flex; justify-content: right; padding-top: 20px">
+                <img id="life1" src="../imgs/globe_life.jpg" alt="globe" width="30" height="40"/>
+                <img id="life2" src="../imgs/globe_life.jpg" alt="globe" width="30" height="40"/>
+                <img id="life3" src="../imgs/globe_life.jpg" alt="globe" width="30" height="40"/>
+                <img id="life4" src="../imgs/globe_life.jpg" alt="globe" width="30" height="40"/>
+                <img id="life5" src="../imgs/globe_life.jpg" alt="globe" width="30" height="40"/>
+            </div>
+        </div>
+        <div id="map-canvas" style= "width: 100%; height: 100%;"></div>
+    </span>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=API_KEY"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBjAI0IDm0XHal4-H7qXCy6E89s1ToiJE"></script>
     <script type="module">
-
         $( document ).ready(function() {
             init();
 
@@ -41,13 +63,10 @@
                     cache : true,
                     dataType : 'json',
                     async : true,
-
                     success : function(data) {
 
                         if (data) {
-
                             $.each(data, function(id, country) {
-
                                 var countryCoords;
                                 var ca;
                                 var co;
@@ -70,30 +89,24 @@
                                     createCountry(countryCoordsArray,country);
 
                                 } else {
-
                                     countryCoords = [];
-
                                     co = country['xml']['outerBoundaryIs']['LinearRing']['coordinates'].split(' ');
 
                                     for (var j in co) {
-
                                         ca = co[j].split(',');
-
                                         countryCoords.push(new google.maps.LatLng(ca[1], ca[0]));
                                     }
 
                                     createCountry(countryCoords,country);
                                 }
                             }.bind(this));
-
                             showCountries();
+                            randomizeNextCountry();
                         }
                     }.bind(this)
                 });
             }
         });
-
-
     </script>
     <script type="text/javascript" src="/constants.js"></script>
     <script type="text/javascript" src="/index.js"></script>
