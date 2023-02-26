@@ -16,17 +16,20 @@
 <body>
     <div class="start-modal" style="position: fixed; z-index: 1; width: 100%;">
         <div class="start-modal-content" style="display: flex; justify-content: center; align-items: center; background-color: #fefefe; margin: 15% auto; width: 30px; height: 100px; padding: 20px; border: 1px solid #888; width: 50%;">
-            <button class="start-button" style="height: 50%; width: 60%;">Start!</button>
+            <button class="start-button" style="height: 50%; width: 60%;">Start</button>
         </div>
     </div>
     <div class="game-over-modal" style="display: none; position: fixed; z-index: 1; width: 100%;">
-        <div class="game-over-modal-content" style="display: flex; justify-content: center; align-items: center; background-color: #fefefe; margin: 15% auto; width: 30px; height: 100px; padding: 20px; border: 1px solid #888; width: 50%;">
-            <div>GAME OVER</div>
+        <div class="game-over-modal-content" style="text-align: center; background-color: #fefefe; margin: 15% auto; width: 30px; padding: 20px; border: 1px solid #888; width: 50%;">
+            <div><b>GAME OVER</b></div>
+            <br/>
             <button class="restart-button" style="height: 50%; width: 40%;">
                 <img src="../imgs/restart.png" alt="restart" width="50" height="50"/>
             </button>
-            <div>You've gotta work on these:</div>
-            <div id="game-stats"></div>
+            <br/>
+            <div id="num-correct-countries"></div>
+            <div><b>You've gotta work on these:</b></div>
+            <div id="incorrect-countries"></div>
         </div>
     </div>
     <span class="game-screen" style="filter: blur(2px)">

@@ -54,7 +54,7 @@ window.onclick = function(event) {
 function countryClick(country, i) {
     // correct guess
     if (country.name === currCountryToGuess.name) {
-        countriesGuessedCorrectly.push(i);
+        countriesGuessedCorrectly.push(currCountryToGuess.name);
         country.setOptions({'fillColor': "#00FF00", 'fillOpacity': 0.8});
         randomizeNextCountry();
     } 
@@ -88,7 +88,11 @@ function generateRandomNumber(min, max, excludedCountries) {
 
 function outOfLivesShowGameOverAndStats() {
     gameScreen.style.filter = "blur(2px)";
-    document.getElementById("game-stats").innerHTML = missedCountries;
+    const numCorrectCountries = countriesGuessedCorrectly.length;
+    document.getElementById("num-correct-countries").innerHTML = `You guessed ${numCorrectCountries} ${numCorrectCountries != 1 ? `countries`:`country`} correctly!`;
+    if (missedCountries.length > 0){
+        document.getElementById("incorrect-countries").innerHTML = missedCountries.map(country => ` ${country}`);
+    }
     document.getElementsByClassName("game-over-modal")[0].style.display = "inline";
 }
 
@@ -112,14 +116,14 @@ function randomizeNextCountry() {
 function showCountries() {
     for (var i = 0; i < countries.length; i++) {
         countries[i].setMap(map);
-        google.maps.event.addListener(countries[i],"mouseover",function(){
-            if (!countriesGuessedCorrectly.includes(i) && !missedCountries.includes(i)){
+        google.maps.event.addListener(countries[i], "mouseover", function(){
+            if (!countriesGuessedCorrectly.includes(this.name) && !missedCountries.includes(this.name)){
                 this.setOptions({fillColor: "#EBEDEF", 'fillOpacity': 0.75});
             }
         });
         
-        google.maps.event.addListener(countries[i],"mouseout",function(){
-            if (!countriesGuessedCorrectly.includes(i) && !missedCountries.includes(i)){
+        google.maps.event.addListener(countries[i], "mouseout", function(){
+            if (!countriesGuessedCorrectly.includes(this.name) && !missedCountries.includes(this.name)){
                 this.setOptions({fillColor: "#EBEDEF", 'fillOpacity': 0});
             }
         });
