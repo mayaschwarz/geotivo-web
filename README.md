@@ -11,4 +11,4 @@ geo-tivo is a web-based geography named after my old yellow lab, TiVo. TiVo love
 5. profit!
 
 ## tivo
-![tivo](../geotivo-web/imgs/tivo.jpg)
+![tivo](./imgs/tivo.jpg)
